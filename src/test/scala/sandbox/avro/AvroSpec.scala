@@ -27,6 +27,14 @@ object Color {
 case class C(a: String, color: Color)
 
 
+object Currency extends Enumeration {
+  val GBP = Value("GBP")
+  val EUR = Value("EUR")
+  val USD = Value("USD")
+}
+
+case class E(a: String, currency: Currency.Value)
+
 class AvroSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
 
   val p = P("henio",12)
@@ -45,6 +53,7 @@ class AvroSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
     println(AvroType[H].schema())
     println(AvroType[D].schema())
     println(AvroType[G].schema())
+    println(AvroType[E].schema())
   }
 
   it should "handle ranamed case class" in {
@@ -78,12 +87,19 @@ class AvroSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
   }
 
   ignore should "serialize enum" in {
-    println(AvroType[C].schema)
     val io: AvroTypeIO[C] = AvroType[C].io
     val out = new ByteArrayOutputStream()
     io.write(C("a",Color.Red),out)
     val Success(c) = io.read(new ByteArrayInputStream(out.toByteArray))
     c.color should be (Color.Red)
+  }
+
+  it should "serialize enumeration" in {
+    val io: AvroTypeIO[E] = AvroType[E].io
+    val out = new ByteArrayOutputStream()
+    io.write(E("a", Currency.EUR), out)
+    val Success(e) = io.read(new ByteArrayInputStream(out.toByteArray))
+    e.currency should be (Currency.EUR)
   }
 
 }
