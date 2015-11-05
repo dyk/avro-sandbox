@@ -13,6 +13,7 @@ case class P(a: String, b: Int)
 case class R(a: String, b: Int)
 case class Q(a: String, renamed: Int)
 case class H(a: String, b: String)
+case class G(a: String, b: Long)
 case class D(a: String)
 
 sealed trait Color
@@ -36,6 +37,16 @@ class AvroSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
     out.toByteArray
   }
 
+
+  ignore should "print schemas" in {
+    println(AvroType[P].schema())
+    println(AvroType[R].schema())
+    println(AvroType[Q].schema())
+    println(AvroType[H].schema())
+    println(AvroType[D].schema())
+    println(AvroType[G].schema())
+  }
+
   it should "handle ranamed case class" in {
     val io: AvroTypeIO[R] = AvroType[R].io
     val Success(r) = io.read(new ByteArrayInputStream(serializedP))
@@ -54,10 +65,16 @@ class AvroSpec extends FlatSpec with Matchers with BeforeAndAfterAll {
     d.a should be (p.a)
   }
 
-  ignore should "deserialize field with changed type" in {
+  ignore should "deserialize field with type changed from int to string" in {
     val io: AvroTypeIO[H] = AvroType[H].io
     val Success(h) = io.read(new ByteArrayInputStream(serializedP))
     h.b should be (p.b.toString)
+  }
+
+  it should "deserialize field with type changed from int to float" in {
+    val io: AvroTypeIO[G] = AvroType[G].io
+    val Success(g) = io.read(new ByteArrayInputStream(serializedP))
+    g.b should equal(p.b)
   }
 
   ignore should "serialize enum" in {
