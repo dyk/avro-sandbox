@@ -1,0 +1,1 @@
+{"name":"sandbox.avro.G","type":"record","fields":[{"name":"a","type":"string"},{"name":"b","type":"long"}]}

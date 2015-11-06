@@ -1,0 +1,1 @@
+{"name":"sandbox.avro.E","type":"record","fields":[{"name":"a","type":"string"},{"name":"currency","type":{"name":"Value","type":"enum","symbols":["GBP","EUR","USD"],"namespace":"sandbox.avro.Currency"}}]}

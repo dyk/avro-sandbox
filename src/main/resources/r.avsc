@@ -1,0 +1,1 @@
+{"name":"sandbox.avro.R","type":"record","fields":[{"name":"a","type":"string"},{"name":"b","type":"int"}]}

@@ -1,0 +1,1 @@
+{"name":"sandbox.avro.Q","type":"record","fields":[{"name":"a","type":"string"},{"name":"renamed","type":"int"}]}
